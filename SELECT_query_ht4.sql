@@ -24,7 +24,8 @@ GROUP by a.artist_name;
 
 --названия сборников, в которых присутствует конкретный исполнитель (Кино)
 select c.collection_name from collection c 
-join track t on c.id = t.collectionid 
+join collection_track ct on c.id = ct.collection_id 
+join track t on ct.track_id = t.id 
 join artist_album aa2 on t.albumid = aa2.album_id 
 join artist a3 on aa2.artist_id = a3.id 
 where a3.artist_name = 'Кино'
@@ -39,8 +40,9 @@ having count(ga.artistid) > 1
 order by count(ga.artistid) desc;
 
 --наименование треков, которые не входят в сборники
-select track_name from track t  
-where t.collectionid is null;
+select t.track_name from track t  
+join collection_track ct on t.id = ct.track_id 
+where ct.collection_id = 10;
 
 --исполнителя, написавшего самый короткий по продолжительности трек
 select a.artist_name, min(t.duration) mind_d from artist a
